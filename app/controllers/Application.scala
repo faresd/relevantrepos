@@ -8,13 +8,20 @@ import scala.concurrent.Future
 
 object Application extends Controller {
   
-  def index = Action {
-  	Async {
-    	val promise: Future[play.api.libs.ws.Response] = WS.url("https://api.github.com/legacy/user/search/:play").get()
-    	promise.map(i => Ok(views.html.index("Got result: " + i.json.toString())))
-    	// Ok(views.html.index("Your new application is ready."))
+	def index = Action {
+		Async {
+			val promise: Future[play.api.libs.ws.Response] = WS.url("https://api.github.com/legacy/user/search/:play").get()
+			promise.map(i => Ok(views.html.index("Got result: " + i.json.toString())))
+			// Ok(views.html.index("Your new application is ready."))
 
-    }
-  }
+		}
+	}
+
+	def search = Action {
+		/*Async {
+		val promise: Future[play.api.libs.ws.Response] = WS.url("https://api.github.com/legacy/user/search/:play").get()
+		promise.map(i => Ok(views.html.index("Got result: " + i.json.toString())))*/
+		Ok(views.html.index("Your new application is ready."))
+	}
   
 }

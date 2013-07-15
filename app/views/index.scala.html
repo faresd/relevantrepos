@@ -1,5 +1,21 @@
 @(message: String)
-@message
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Title</a>
+    <ul class="nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Link</a></li>
+      <li><a href="#">Link</a></li>
+    </ul>
+  </div>
+</div>
+
+
+<form class="form-search" action="/search" method="get">
+  <input type="text" class="input-medium search-query">
+  <button type="submit" class="btn">Search</button>
+</form>
+
 
 @main("Welcome to Play 2.1") {
     
