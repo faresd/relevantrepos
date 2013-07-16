@@ -1,7 +1,19 @@
-@(message: String)
-
-sdfadjflksjlakjdsljlaldsjljalfjds
+@(results: List[modules.search.GithubRepos])
 
 @main("Welcome to Play 2.1") {
-    
+<ul>
+  @results.map { result =>
+    <li class="span5 clearfix" style="list-style-type: none; display:block; margin-bottom: 10px">
+      <div class="thumbnail clearfix">
+        <div class="caption" >
+          <a href="#" class="btn btn-primary icon  pull-right">Contributors repos</a>
+          <h4>      
+          <a href="#" >@result.username / @result.name</a>
+          </h4>
+        </div>
+      </div>
+    </li>
+  }
+<ul>
+
 }
