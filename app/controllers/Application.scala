@@ -64,7 +64,7 @@ object Application extends Controller {
 				val resultCollaborators:List[String] = collaborators.reads(i.json).get
 				val repositories:Future[List[String]] = Future.sequence( resultCollaborators.map(c => {
 					val userReposUrl = "https://api.github.com/users/" + c + "/repos"
-					val promise: Future[play.api.libs.ws.Response] = WS.url(url).withQueryString("access_token" -> "5b94b73ca5b609f471c642b770ea694a096b5dd3").get()
+					val promise: Future[play.api.libs.ws.Response] = WS.url(userReposUrl).withQueryString("access_token" -> "5b94b73ca5b609f471c642b770ea694a096b5dd3").get()
 					promise.map(i => {
 						var x = userRepos.reads(i.json).get
 						println(x)

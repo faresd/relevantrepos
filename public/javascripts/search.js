@@ -6,7 +6,7 @@ $('#search-form').submit(function(e){
 
 })
 
-$('#count-repos').click(function(e){
+$('.count-repos').click(function(e){
 	e.preventDefault();
 	var owner = $(this).attr("data-owner");
 	var repoName = $(this).attr("data-repo-name");
