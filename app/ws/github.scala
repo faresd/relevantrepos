@@ -20,7 +20,6 @@ import java.net.URLEncoder
 
 object githubWs {
 
-
   def search(keyword: String): Future[List[GithubRepos]] = {
     val encodedKeyword = URLEncoder.encode(keyword,"UTF-8"); 	
 	val url = "https://api.github.com/legacy/repos/search/" + encodedKeyword
@@ -53,8 +52,4 @@ object githubWs {
 		x
 	})
   }
-
-
-
-
 }
