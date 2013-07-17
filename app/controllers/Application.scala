@@ -25,19 +25,10 @@ object Application extends Controller {
 		Ok(views.html.index(""))
 	}
 
-/*
-	val usernameReads:Reads[String] = (JsPath \ "username").read[String]
-	val loginReads:Reads[String] = (JsPath \ "login").read[String]
-	val searchResultReads:Reads[SearchResult] = usernameReads.and(loginReads).apply(SearchResult.apply _)
-
-	*/
-
 	def search(keyword: String) = Action {
-		println(keyword)
 		Async {
 			val encodedKeyword = URLEncoder.encode(keyword,"UTF-8"); 	
 			val url = "https://api.github.com/legacy/repos/search/" + encodedKeyword
-			println(url)
 
 			val promise: Future[play.api.libs.ws.Response] = WS.url(url).withQueryString("access_token" -> "5b94b73ca5b609f471c642b770ea694a096b5dd3").get()
 			promise.map(i => {
@@ -45,20 +36,12 @@ object Application extends Controller {
 				Ok(views.html.search(searchResult.get.users))
 
 			})
-			// Ok(views.html.index("Your new application is ready."))
 
 		}
-		//val cra = Json.fromJson[List[Cra]](json)
-
-		/*Async {
-		val promise: Future[play.api.libs.ws.Response] = WS.url("https://api.github.com/legacy/user/search/:play").get()
-		promise.map(i => Ok(views.html.index("Got result: " + i.json.toString())))*/
 	}
 	def getCollaborators(owner:String, rname:String) = Action {
-		println(owner)
 		Async {
 			val url = "https://api.github.com/repos/" + owner + "/" + rname + "/collaborators"
-			println(url)
 			val promise: Future[play.api.libs.ws.Response] = WS.url(url).withQueryString("access_token" -> "5b94b73ca5b609f471c642b770ea694a096b5dd3").get()
 			var reposByUsers:Future[List[String]] = promise.flatMap(i => {
 				val resultCollaborators:List[String] = collaborators.reads(i.json).get
@@ -67,9 +50,7 @@ object Application extends Controller {
 					val promise: Future[play.api.libs.ws.Response] = WS.url(userReposUrl).withQueryString("access_token" -> "5b94b73ca5b609f471c642b770ea694a096b5dd3").get()
 					promise.map(i => {
 						var x = userRepos.reads(i.json).get
-						println(x)
 						x
-
 					})
 
 				})).map(_.flatten.distinct)
@@ -79,16 +60,6 @@ object Application extends Controller {
 
 			reposByUsers.map(firstlist => Ok(views.html.collaborators(firstlist)))
 
-			
-
-			// Ok(views.html.index("Your new application is ready."))
-
 		}
-		//val cra = Json.fromJson[List[Cra]](json)
-
-		/*Async {
-		val promise: Future[play.api.libs.ws.Response] = WS.url("https://api.github.com/legacy/user/search/:play").get()
-		promise.map(i => Ok(views.html.index("Got result: " + i.json.toString())))*/
 	}
-  
 }
