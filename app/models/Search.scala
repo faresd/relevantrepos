@@ -1,4 +1,4 @@
-package modules.search;
+package models.search;
 import play.api.libs.json.Reads
 import play.api.libs.json.JsPath
 import play.api.libs.json.Json

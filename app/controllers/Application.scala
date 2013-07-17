@@ -9,10 +9,10 @@ import play.api.libs.json.Reads
 import play.api.libs.json.JsPath
 import play.api.libs.json.Json
 import play.api.libs.functional.syntax._
-import modules.search._
-import modules.search.Search._
-import modules.search.Collaborators._
-import modules.search.Repos._
+import models.search._
+import models.search.Search._
+import models.search.Collaborators._
+import models.search.Repos._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import java.net.URLEncoder
