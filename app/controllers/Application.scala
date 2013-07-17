@@ -33,6 +33,7 @@ object Application extends Controller {
 			})
 		}
 	}
+
 	def getCollaborators(owner:String, rname:String) = Action {
 		Async {
 			var reposByUsers:Future[List[String]] = githubWs.getCollaborators(owner, rname).flatMap (listCollaborators => {

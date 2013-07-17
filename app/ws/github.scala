@@ -33,7 +33,9 @@ object githubWs {
   }
 
   def getCollaborators(owner: String, rname: String): Future[List[String]] = {
-    val url = "https://api.github.com/repos/" + owner + "/" + rname + "/collaborators"
+  	val encodedOwner = URLEncoder.encode(owner,"UTF-8");
+  	val encodedRname = URLEncoder.encode(rname,"UTF-8"); 	
+    val url = "https://api.github.com/repos/" + encodedOwner + "/" + encodedRname + "/collaborators"
 	val promise: Future[play.api.libs.ws.Response] = WS.url(url).withQueryString("access_token" -> "5b94b73ca5b609f471c642b770ea694a096b5dd3").get()
 	var reposByUsers:Future[List[String]] = promise.map(i => {
 		val resultCollaborators:List[String] = collaborators.reads(i.json).get
@@ -43,7 +45,8 @@ object githubWs {
   }
 
   def getReposByUser(user: String): Future[List[String]] = {
-   	val userReposUrl = "https://api.github.com/users/" + user + "/repos"
+  	val encodedUser = URLEncoder.encode(user,"UTF-8");
+   	val userReposUrl = "https://api.github.com/users/" + encodedUser + "/repos"
 	val promise: Future[play.api.libs.ws.Response] = WS.url(userReposUrl).withQueryString("access_token" -> "5b94b73ca5b609f471c642b770ea694a096b5dd3").get()
 	promise.map(i => {
 		var x = userRepos.reads(i.json).get

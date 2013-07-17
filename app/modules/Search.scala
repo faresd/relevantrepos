@@ -8,8 +8,7 @@ import play.api.libs.functional.syntax._
 case class GithubRepos(owner:String, name:String)
 
 case class SearchResult(users:List[GithubRepos])
-// implicit val ug = Json.reads[GithubUser]
-// val tata = Json.reads[SearchResult]
+
 
 object Search {
 
@@ -25,21 +24,16 @@ object Search {
 
 
 case class Collaborators(collaborators:List[String])
-// implicit val ug = Json.reads[GithubUser]
-// val tata = Json.reads[SearchResult]
+
 
 object Collaborators {
 
 	val login:Reads[String] = (JsPath \ "login").read[String]
 
 	val collaborators:Reads[List[String]] = Reads.list(login)
-
-	//val resultReads: Reads[SearchResult] = (JsPath \ "repositories").read(repos).map(repos => SearchResult(repos))
 }
 
 case class Repos(repos:List[String])
-// implicit val ug = Json.reads[GithubUser]
-// val tata = Json.reads[SearchResult]
 
 object Repos {
 
@@ -47,5 +41,4 @@ object Repos {
 
 	val userRepos:Reads[List[String]] = Reads.list(repoUrl)
 
-	//val resultReads: Reads[SearchResult] = (JsPath \ "repositories").read(repos).map(repos => SearchResult(repos))
 }
