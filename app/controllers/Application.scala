@@ -1,5 +1,5 @@
 package controllers
-
+import ws.githubWs
 import play.api._
 import play.api.mvc._
 import play.api.libs.ws.WS
@@ -27,32 +27,17 @@ object Application extends Controller {
 
 	def search(keyword: String) = Action {
 		Async {
-			val encodedKeyword = URLEncoder.encode(keyword,"UTF-8"); 	
-			val url = "https://api.github.com/legacy/repos/search/" + encodedKeyword
-
-			val promise: Future[play.api.libs.ws.Response] = WS.url(url).withQueryString("access_token" -> "5b94b73ca5b609f471c642b770ea694a096b5dd3").get()
-			promise.map(i => {
-				val searchResult = resultReads.reads(i.json)
-				Ok(views.html.search(searchResult.get.users))
-
+			val searchResult = githubWs.search(keyword)
+			searchResult.map(i => {
+				Ok(views.html.search(i))
 			})
-
 		}
 	}
 	def getCollaborators(owner:String, rname:String) = Action {
 		Async {
-			val url = "https://api.github.com/repos/" + owner + "/" + rname + "/collaborators"
-			val promise: Future[play.api.libs.ws.Response] = WS.url(url).withQueryString("access_token" -> "5b94b73ca5b609f471c642b770ea694a096b5dd3").get()
-			var reposByUsers:Future[List[String]] = promise.flatMap(i => {
-				val resultCollaborators:List[String] = collaborators.reads(i.json).get
-				val repositories:Future[List[String]] = Future.sequence( resultCollaborators.map(c => {
-					val userReposUrl = "https://api.github.com/users/" + c + "/repos"
-					val promise: Future[play.api.libs.ws.Response] = WS.url(userReposUrl).withQueryString("access_token" -> "5b94b73ca5b609f471c642b770ea694a096b5dd3").get()
-					promise.map(i => {
-						var x = userRepos.reads(i.json).get
-						x
-					})
-
+			var reposByUsers:Future[List[String]] = githubWs.getCollaborators(owner, rname).flatMap (listCollaborators => {
+				val repositories:Future[List[String]] = Future.sequence(listCollaborators.map (c => {
+					githubWs.getReposByUser(c)
 				})).map(_.flatten.distinct)
 
 				repositories
