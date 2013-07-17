@@ -1,0 +1,18 @@
+@(collaborators: List[String])
+
+@main("Welcome to Play 2.1") {
+<div class="span5 clearfix">
+  <h1>There is/are @collaborators.size repos linked to user!<h1>
+</div>
+@collaborators.map { collaborator =>
+    <li class="span5 clearfix" style="list-style-type: none; display:block; margin-bottom: 10px">
+      <div class="thumbnail clearfix">
+        <div class="caption" >
+          <h4>      
+          <a href="@collaborator" >@collaborator</a>
+          </h4>
+        </div>
+      </div>
+    </li>
+  }
+}
