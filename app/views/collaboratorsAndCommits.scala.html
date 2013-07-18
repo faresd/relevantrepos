@@ -1,0 +1,24 @@
+@(collaborators: Map[String,List[String]])
+
+@main("Welcome to Play 2.1") {
+<div class="span5 clearfix">
+  <h1>There is/are @collaborators.size users in that repo!<h1>
+</div>
+@collaborators.zipWithIndex.map { collaborator =>
+    <li class="span5 clearfix" style="list-style-type: none; display:block; margin-bottom: 10px">
+      <div class="thumbnail clearfix">
+        <div class="caption" >
+          <h3>User: @collaborator._1._1 has @collaborator._1._2.size commits!</h3>
+          <a class="accordion-toggle btn btn-primary" data-toggle="collapse" data-target="#ul@collaborator._2" >Click here to see list of commits</a>
+          <ul id="ul@collaborator._2" class="collapse ">
+            @collaborator._1._2.map { commit =>
+              <li class="span5 " style="max-width: 280px;" >
+                  @commit
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </li>
+  }
+}

@@ -42,3 +42,22 @@ object Repos {
 	val userRepos:Reads[List[String]] = Reads.list(repoUrl)
 
 }
+case class ReposName(repos:List[String])
+
+object ReposName {
+
+	val repoName:Reads[String] = (JsPath \ "name").read[String]
+
+	val userReposByName:Reads[List[String]] = Reads.list(repoName)
+
+}
+
+case class Commits(commits:List[String])
+
+object Commits {
+
+	val sha:Reads[String] = (JsPath \ "commit" \ "message").read[String]
+
+	val userCommits:Reads[List[String]] = Reads.list(sha)
+
+}

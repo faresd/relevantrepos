@@ -6,6 +6,7 @@
 GET     /                          								controllers.Application.index
 GET     /search/:keyword            							controllers.Application.search(keyword: String)
 GET 	/collaborators/								        	controllers.Application.getCollaborators(owner: String, rname: String)
+GET 	/collaborators/commits/								    controllers.Application.getCommitsByCollaborators(owner: String, rname: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

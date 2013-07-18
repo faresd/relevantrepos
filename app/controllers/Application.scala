@@ -48,4 +48,35 @@ object Application extends Controller {
 
 		}
 	}
+
+	def getCommitsByCollaborators(owner:String, rname:String) = Action {
+		Async {
+			var reposByUsersByCommits:Future[List[Map[String,List[String]]]] = githubWs.getCollaborators(owner, rname).flatMap (listCollaborators => {
+				val repositories:Future[List[Map[String,List[String]]]] = Future.sequence(listCollaborators.map (user => {
+					println("what is user?")
+					println(user)
+					val commitsByUser:Future[List[String]] = githubWs.getReposNameByUser(user).flatMap(l => { Future.sequence(l.map(repo => {
+						githubWs.getCommitsByUserAndRepos(user,repo)
+					}))}).map(_.flatten)
+					val commitsMapTolist:List[Future[(String, List[String])]] = Map(user -> commitsByUser).toList.map( key_value => key_value._2.map(xs => (key_value._1, xs) ))
+
+					val commitsByUserAndRepos:Future[Map[String, List[String]]] = Future.sequence(commitsMapTolist).map(_.toMap)
+					commitsByUserAndRepos
+				}))
+
+				repositories
+			})
+
+			val reposByUsersByCommitsToMap:Future[Map[String,List[String]]] = reposByUsersByCommits.map(i => listOfMapsToMap(i))
+			reposByUsersByCommitsToMap.map(map => Ok(views.html.collaboratorsAndCommits(map)))
+
+		}
+	}
+
+	def listOfMapsToMap(listOfMaps:List[Map[String,List[String]]]):Map[String,List[String]] = {
+		val keys = listOfMaps.map(_.keySet).reduceLeft(_ | _)
+		val resultMap = keys.map(k => k -> listOfMaps.flatMap(_ get k).reduceLeft(_ ++ _))
+		resultMap.toMap
+
+	}
 }

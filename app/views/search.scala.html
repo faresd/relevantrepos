@@ -6,10 +6,13 @@
     <li class="span5 clearfix" style="list-style-type: none; display:block; margin-bottom: 10px">
       <div class="thumbnail clearfix">
         <div class="caption" >
-          <a data-owner="@result.owner" data-repo-name="@result.name"  href="/collaborators/?owner=@result.owner&rname=@result.name" class="btn btn-primary icon  pull-right count-repos">Contributors repos</a>
-          <h4>      
-          <a href="#" >@result.owner / @result.name</a>
+          <h4 style="display: inline-block; vertical-align: 21px; min-width: 290px; max-width: 290px;">      
+            <a href="#" >@result.owner / @result.name</a>
           </h4>
+          <div style="display: inline-block; width: 139px;">
+              <a data-owner="@result.owner" data-repo-name="@result.name"  href="/collaborators/?owner=@result.owner&rname=@result.name" class="btn btn-primary  btn-mini icon  btn-block  pull-right count-repos">Contributors repos</a>
+              <a data-owner="@result.owner" data-repo-name="@result.name"  href="/collaborators/commits/?owner=@result.owner&rname=@result.name" class="btn btn-mini btn-primary icon  btn-block  pull-right count-repos">Contributors commits</a>
+          </div>
         </div>
       </div>
     </li>
